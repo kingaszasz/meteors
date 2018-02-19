@@ -16,6 +16,7 @@ function successAjax(xhttp) {
     // Innen, ide dolgozz... Itt hívd meg a függvényeid stb. A json file tartalma innen érhető csak
     // Live servert használd mindig
 
+    formatMass(data);
     createTable(data);
 
 }
@@ -24,12 +25,17 @@ function successAjax(xhttp) {
 
 getData('/js/meteorits.json', successAjax);
 
+function formatMass(data){
+    for (var i = 0; i < data.length; i++) {
+        data[i].mass = parseInt(data[i].mass).toFixed(2);
+        console.log(data[i].mass);
+    }
+}
 
 function createTable(data) {
     var table='';
     var head = '<tr>';
     for (var i in data[0]) {
-        console.log(i);
         if (i != "fall" && i != "geolocation") { 
             head += `<th>${[i]}</th>`;
         }
