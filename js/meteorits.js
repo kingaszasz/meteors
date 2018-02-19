@@ -16,6 +16,7 @@ function successAjax(xhttp) {
     // Innen, ide dolgozz... Itt hívd meg a függvényeid stb. A json file tartalma innen érhető csak
     // Live servert használd mindig
 
+    sumMass(data);
     formatMass(data);
     createTable(data);
 
@@ -28,8 +29,22 @@ getData('/js/meteorits.json', successAjax);
 function formatMass(data){
     for (var i = 0; i < data.length; i++) {
         data[i].mass = parseInt(data[i].mass).toFixed(2);
-        console.log(data[i].mass);
+        //console.log(data[i].mass);
     }
+}
+
+function sumMass(data){
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
+        data[i].mass = parseInt(data[i].mass)
+        console.log(typeof data[i].mass);
+        console.log(data[i].mass);
+        if (!isNaN(data[i].mass)) {
+            sum += data[i].mass;
+        }
+    }
+    sum = sum.toFixed(2);
+    document.querySelector('#sum').innerHTML = ` Az összes meteorit összsúlya ${sum}`;
 }
 
 function createTable(data) {
