@@ -17,14 +17,64 @@ function successAjax(xhttp) {
     // Live servert használd mindig
 
     sumMass(data);
+    findMinMax(data);
     formatMass(data);
     createTable(data);
+    sortMass(data);
 
 }
 
 
 
 getData('/js/meteorits.json', successAjax);
+
+function findMinMax(data){
+    var min = parseInt(data[0].mass);
+    var max = parseInt(data[0].mass);
+    for (var i = 0; i < data.length; i++) {
+        for (var j = i+1; j < data.length; j++) {
+        data[i].mass = parseInt(data[i].mass);
+        data[j].mass = parseInt(data[j].mass);
+            if (data[i].mass > data[j].mass) {
+            min = data[j].mass;
+            max = data[i].mass;
+            }
+        }
+    }
+}
+document.querySelector('#min').innerHTML = ` A legkönyebb meteorit súlya ${min}`;
+document.querySelector('#max').innerHTML = ` A legnehezebb meteorit súlya ${max}`;
+
+function sortMass(data){
+    var temp;
+    for (var i = 0; i < data.length; i++) {
+        for (var j = i+1; j < data.length; j++) {
+        data[i].mass = parseInt(data[i].mass);
+        data[j].mass = parseInt(data[j].mass);
+            if (data[i].mass > data[j].mass) {
+            temp = data[i];
+            data[i] = data[j];
+            data[j] = temp;
+            }
+        }
+    }
+}
+
+
+
+function sumMass(data){
+    var sum = 0;
+    for (var i = 0; i < data.length; i++) {
+        data[i].mass = parseInt(data[i].mass)
+        //console.log(typeof data[i].mass);
+        //console.log(data[i].mass);
+        if (!isNaN(data[i].mass)) {
+            sum += data[i].mass;
+        }
+    }
+    sum = sum.toFixed(2);
+    document.querySelector('#sum').innerHTML = ` Az összes meteorit összsúlya ${sum}`;
+}
 
 function formatMass(data){
     for (var i = 0; i < data.length; i++) {
@@ -33,19 +83,6 @@ function formatMass(data){
     }
 }
 
-function sumMass(data){
-    var sum = 0;
-    for (var i = 0; i < data.length; i++) {
-        data[i].mass = parseInt(data[i].mass)
-        console.log(typeof data[i].mass);
-        console.log(data[i].mass);
-        if (!isNaN(data[i].mass)) {
-            sum += data[i].mass;
-        }
-    }
-    sum = sum.toFixed(2);
-    document.querySelector('#sum').innerHTML = ` Az összes meteorit összsúlya ${sum}`;
-}
 
 function createTable(data) {
     var table='';
